@@ -14,12 +14,15 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setId(2L);
-            member.setName("second");
+            Member member = em.find(Member.class, 1L);
+            member.setName("third");
 
             //saveQuery
-            em.persist(member);
+//            em.persist(member);
+
+            //delete Query
+//            em.remove(member);
+            
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
