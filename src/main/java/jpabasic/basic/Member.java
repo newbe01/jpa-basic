@@ -8,8 +8,6 @@ import java.util.Date;
 public class Member {
 
     @Id
-    // identity 기본키 생성을 데이터베이스에 위임
-    // sequence sequence 순으로 기본키 생성
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
