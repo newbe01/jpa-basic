@@ -38,6 +38,10 @@ public class PersistenceEx {
 
             member2.setName("dirty checking"); // 변경을 감지해서 transaction 종료시 자동 update 쿼리
 
+            Member member3 = new Member(103L, "flush");
+            em.persist(member3);
+            em.flush(); // 영속성 컨텍스트의 변경 내용을 데이터베이스에 반영
+
             // 실제 저장시점
             tx.commit();
         } catch (Exception e) {
