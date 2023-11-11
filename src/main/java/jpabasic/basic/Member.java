@@ -8,27 +8,30 @@ import java.util.Date;
 public class Member {
 
     @Id
+    // identity 기본키 생성을 데이터베이스에 위임
+    // sequence sequence 순으로 기본키 생성
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name") // domain의 속성을 정할 수 있음
     private String name;
 
-    private Integer age;
-
-    @Enumerated(EnumType.STRING)    // EnumClass 를 사용할때 항상 옵션을 String 으로
-    private RoleType roleType;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
-
-    @Lob    // bigSize
-    private String description;
-
-    @Transient  //  db 저장 X
-    private int tmp;
+//    private Integer age;
+//
+//    @Enumerated(EnumType.STRING)    // EnumClass 를 사용할때 항상 옵션을 String 으로
+//    private RoleType roleType;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date createdDate;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date lastModifiedDate;
+//
+//    @Lob    // bigSize
+//    private String description;
+//
+//    @Transient  //  db 저장 X
+//    private int tmp;
 
     public Member() {
     }
