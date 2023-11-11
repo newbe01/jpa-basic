@@ -12,6 +12,8 @@ public class PersistenceEx {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
+        tx.begin();
+
         try {
 
             // 비영속 상태
@@ -23,10 +25,18 @@ public class PersistenceEx {
             em.persist(member);
 
             // 영속성 컨텍스트에서 분리, 준영속
-            em.detach(member);
+//            em.detach(member);
 
             // 객체를 삭제한 상태
-            em.remove(member);
+//            em.remove(member);
+//
+            Member member1 = em.find(Member.class, 100L);
+            Member member2 = em.find(Member.class, 100L);   // 캐시된 데이터를 읽어옴
+            System.out.println("member1 = " + member1.getId());
+            System.out.println("member1 = " + member1.getName());
+            System.out.println("result = " + (member1 == member2)); // true
+
+            member2.setName("dirty checking"); // 변경을 감지해서 transaction 종료시 자동 update 쿼리
 
             // 실제 저장시점
             tx.commit();
