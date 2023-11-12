@@ -1,9 +1,6 @@
 package jpabasic.basic;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Member2 {
@@ -16,8 +13,20 @@ public class Member2 {
     @Column(name = "USER_NAME")
     String name;
 
-    @Column(name = "TEAM_ID")
-    private Long teamId;
+//    @Column(name = "TEAM_ID")
+//    private Long teamId;
+
+    @ManyToOne // member 와 team 은 N : 1 관계
+    @JoinColumn(name = "TEAM_ID")
+    private Team2 team;
+
+    public Team2 getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team2 team) {
+        this.team = team;
+    }
 
     public Long getId() {
         return id;
@@ -35,11 +44,4 @@ public class Member2 {
         this.name = name;
     }
 
-    public Long getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
-    }
 }
