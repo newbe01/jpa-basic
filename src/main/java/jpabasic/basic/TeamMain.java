@@ -21,12 +21,17 @@ public class TeamMain {
 
             Member2 member = new Member2();
             member.setName("member");
-            member.setTeamId(team.getId());
+//            member.setTeamId(team.getId());
+            member.setTeam(team);
             em.persist(member);
 
             Member2 member2 = em.find(Member2.class, member.getId());
-            Team2 team2 = em.find(Team2.class, member2.getTeamId());
+//            Team2 team2 = em.find(Team2.class, member2.getTeamId());
+            Team2 findTeam = member2.getTeam();
+            System.out.println("findTeam.getName() = " + findTeam.getName());
 
+            Team2 newTeam = em.find(Team2.class, 100L);
+            member2.setTeam(newTeam);   // team Update시 객체를 넣어서 수정
 
             tx.commit();
         } catch (Exception e) {
