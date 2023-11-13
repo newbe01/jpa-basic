@@ -2,6 +2,7 @@ package com.example.entitymapping;
 
 import com.example.entitymapping.domain.Member;
 import com.example.entitymapping.domain.Order;
+import com.example.entitymapping.domain.OrderItem;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,10 +19,14 @@ public class JpaMain {
 
         try {
 
-            Order order = em.find(Order.class, 1L);
-            Member member = em.find(Member.class, order.getMemberId());
-            member.getName();
-//            order.getMember() 불가능
+            Order order = new Order();
+//            order.addOrderItem(new OrderItem());
+            em.persist(order);
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+
+            em.persist(orderItem);
 
             tx.commit();
         } catch (Exception e) {
