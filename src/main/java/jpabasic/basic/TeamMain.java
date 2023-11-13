@@ -25,9 +25,10 @@ public class TeamMain {
 //            member.setTeamId(team.getId());
 
             em.persist(team);
-            member.changeTeam(team);
+//            member.changeTeam(team);
             em.persist(member);
 
+            team.addMember(member);
 //            team.getMembers().add(member); // 양방향 매핑시 양쪽값 세팅
 
             em.flush();

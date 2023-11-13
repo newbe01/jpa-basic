@@ -45,4 +45,7 @@ public class Member2 {
         this.name = name;
     }
 
+    public void setTeam(Team2 team) {
+        this.team = team;
+    }
 }
