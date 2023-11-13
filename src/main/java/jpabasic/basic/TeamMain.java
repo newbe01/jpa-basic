@@ -16,20 +16,28 @@ public class TeamMain {
 
         try {
 
+            Team2 team = new Team2();
+            team.setName("TeamA");
+//            team.getMembers().add(member);  // 역방향 매핑은 db저장되지않음
+
             Member2 member = new Member2();
             member.setName("member");
 //            member.setTeamId(team.getId());
 
-            Team2 team = new Team2();
-            team.setName("TeamA");
-            team.getMembers().add(member);  // 역방향 매핑은 db저장되지않음
-
             em.persist(team);
-//            member.setTeam(team);
+            member.changeTeam(team);
             em.persist(member);
+
+//            team.getMembers().add(member); // 양방향 매핑시 양쪽값 세팅
 
             em.flush();
             em.clear();
+
+            Team2 findTeam = em.find(Team2.class, team.getId());
+            List<Member2> members = findTeam.getMembers();
+            for (Member2 m : members) {
+                System.out.println("m.getName() = " + m.getName());
+            }
 
 //            Member2 member2 = em.find(Member2.class, member.getId());
 //            Team2 team2 = em.find(Team2.class, member2.getTeamId());
