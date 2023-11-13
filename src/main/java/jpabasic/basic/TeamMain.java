@@ -16,29 +16,31 @@ public class TeamMain {
 
         try {
 
-            Team2 team = new Team2();
-            team.setName("TeamA");
-            em.persist(team);
-
             Member2 member = new Member2();
             member.setName("member");
 //            member.setTeamId(team.getId());
-            member.setTeam(team);
+
+            Team2 team = new Team2();
+            team.setName("TeamA");
+            team.getMembers().add(member);  // 역방향 매핑은 db저장되지않음
+
+            em.persist(team);
+//            member.setTeam(team);
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            Member2 member2 = em.find(Member2.class, member.getId());
+//            Member2 member2 = em.find(Member2.class, member.getId());
 //            Team2 team2 = em.find(Team2.class, member2.getTeamId());
-            Team2 findTeam = member2.getTeam();
-            System.out.println("findTeam.getName() = " + findTeam.getName());
-
-            List<Member2> members = findTeam.getMembers();
-
-            for (Member2 m : members) {
-                System.out.println("m.getName() = " + m.getName());
-            }
+//            Team2 findTeam = member2.getTeam();
+//            System.out.println("findTeam.getName() = " + findTeam.getName());
+//
+//            List<Member2> members = findTeam.getMembers();
+//
+//            for (Member2 m : members) {
+//                System.out.println("m.getName() = " + m.getName());
+//            }
 
 
 //            Team2 newTeam = em.find(Team2.class, 100L);
