@@ -1,6 +1,8 @@
 package jpabasic.basic;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member2 {
@@ -23,6 +25,15 @@ public class Member2 {
     @OneToOne
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
+
+//    @ManyToMany
+//    @JoinTable(name = "MEMBER_PRODUCT")
+//    private List<Product> products = new ArrayList<>();
+//    다대다 사용지양으로 중간테이블 생성방법
+
+    @OneToMany(mappedBy = "member2")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
+
 
     public Team2 getTeam() {
         return team;
