@@ -20,6 +20,10 @@ public class Member2 {
     @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) // 1:N 양방향시 readonly
     private Team2 team;
 
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
     public Team2 getTeam() {
         return team;
     }
