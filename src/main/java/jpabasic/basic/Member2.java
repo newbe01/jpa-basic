@@ -17,7 +17,7 @@ public class Member2 {
 //    private Long teamId;
 
     @ManyToOne // member 와 team 은 N : 1 관계
-    @JoinColumn(name = "TEAM_ID")
+//    @JoinColumn(name = "TEAM_ID")
     private Team2 team;
 
     public Team2 getTeam() {
