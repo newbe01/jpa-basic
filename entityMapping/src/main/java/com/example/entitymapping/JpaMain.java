@@ -1,8 +1,6 @@
 package com.example.entitymapping;
 
-import com.example.entitymapping.domain.Member;
-import com.example.entitymapping.domain.Order;
-import com.example.entitymapping.domain.OrderItem;
+import com.example.entitymapping.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -27,6 +25,11 @@ public class JpaMain {
             orderItem.setOrder(order);
 
             em.persist(orderItem);
+
+            Book book = new Book();
+            book.setName("name");
+            book.setAuthor("name");
+            em.persist(book);
 
             tx.commit();
         } catch (Exception e) {

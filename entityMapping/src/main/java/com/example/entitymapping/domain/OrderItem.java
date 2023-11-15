@@ -3,7 +3,7 @@ package com.example.entitymapping.domain;
 import javax.persistence.*;
 
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
     @Id
     @GeneratedValue
