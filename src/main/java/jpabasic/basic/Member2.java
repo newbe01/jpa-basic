@@ -18,8 +18,8 @@ public class Member2 extends BaseEntity {
 //    @Column(name = "TEAM_ID")
 //    private Long teamId;
 
-    @ManyToOne // member 와 team 은 N : 1 관계
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false) // 1:N 양방향시 readonly
+    @ManyToOne(fetch = FetchType.EAGER) // member 와 team 은 N : 1 관계  lazy 설정시 proxy로 가져옴 EAGER 즉시로딩
+    @JoinColumn(name = "TEAM_ID") // 1:N 양방향시 readonly
     private Team2 team;
 
     @OneToOne
