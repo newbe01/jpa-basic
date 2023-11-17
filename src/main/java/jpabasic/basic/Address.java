@@ -1,6 +1,7 @@
 package jpabasic.basic;
 
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 public class Address {
@@ -13,6 +14,19 @@ public class Address {
 
 //    private Member3 member3;  가능
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address address)) return false;
+        return Objects.equals(getCity(), address.getCity())
+                && Objects.equals(getStreet(), address.getStreet())
+                && Objects.equals(getZipcode(), address.getZipcode());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCity(), getStreet(), getZipcode());
+    }
 
     public Address() {
 
@@ -47,4 +61,5 @@ public class Address {
     private void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
+
 }

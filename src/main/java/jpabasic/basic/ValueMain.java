@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 
 public class ValueMain {
+
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPA2");
 
@@ -16,6 +17,7 @@ public class ValueMain {
 
         try {
             Address address = new Address("city", "street", "zipcode");
+            Address address2 = new Address("city", "street", "zipcode");
 
             Member3 member = new Member3();
             member.setName("name");
@@ -26,6 +28,8 @@ public class ValueMain {
             Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
             member.setHomeAddress(newAddress);
 
+            // equals & hashcode 를 구현한뒤에는 true
+            System.out.println("add1 eq add2 = " + address.equals(address2));
 
 
 //            Member3 member2 = new Member3();
