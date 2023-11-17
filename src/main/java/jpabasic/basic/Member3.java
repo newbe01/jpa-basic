@@ -1,7 +1,6 @@
 package jpabasic.basic;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class Member3 {
@@ -18,7 +17,7 @@ public class Member3 {
     private Period workPeriod;
 
     @Embedded
-    private Address hoemAddress;
+    private Address homeAddress;
 
     @Embedded
     @AttributeOverrides({
@@ -53,11 +52,11 @@ public class Member3 {
         this.workPeriod = workPeriod;
     }
 
-    public Address getHoemAddress() {
-        return hoemAddress;
+    public Address getHomeAddress() {
+        return homeAddress;
     }
 
-    public void setHoemAddress(Address hoemAddress) {
-        this.hoemAddress = hoemAddress;
+    public void setHomeAddress(Address hoemAddress) {
+        this.homeAddress = hoemAddress;
     }
 }

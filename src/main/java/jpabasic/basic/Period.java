@@ -22,7 +22,7 @@ public class Period {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    private void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
@@ -30,7 +30,7 @@ public class Period {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    private void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 }
