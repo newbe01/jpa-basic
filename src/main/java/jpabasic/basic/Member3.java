@@ -1,6 +1,10 @@
 package jpabasic.basic;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Member3 {
@@ -19,14 +23,47 @@ public class Member3 {
     @Embedded
     private Address homeAddress;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride( name = "city", column = @Column(name = "WORK_CITY")),
-            @AttributeOverride( name = "street", column = @Column(name = "WORK_STREET")),
-            @AttributeOverride( name = "zipcode", column = @Column(name = "WORK_ZIPCODE")),
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD",
+            joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
 
-    })
-    private Address workAddress;
+    //    @ElementCollection
+//    @CollectionTable(name = "ADDRESS",
+//            joinColumns = @JoinColumn(name = "MEMBER_ID"))
+//    private List<Address> addressHistory = new ArrayList<>();
+
+//    값 타입 대신 1:N 매핑으로 변경
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    public List<AddressEntity> addressHistory = new ArrayList<>();
+
+
+//    @Embedded
+//    @AttributeOverrides({
+//            @AttributeOverride( name = "city", column = @Column(name = "WORK_CITY")),
+//            @AttributeOverride( name = "street", column = @Column(name = "WORK_STREET")),
+//            @AttributeOverride( name = "zipcode", column = @Column(name = "WORK_ZIPCODE")),
+//
+//    })
+//    private Address workAddress;
+
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public void setFavoriteFoods(Set<String> favoriteFoods) {
+        this.favoriteFoods = favoriteFoods;
+    }
+
+    public List<AddressEntity> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<AddressEntity> addressHistory) {
+        this.addressHistory = addressHistory;
+    }
 
     public Long getId() {
         return id;
