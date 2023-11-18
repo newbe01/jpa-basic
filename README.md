@@ -242,10 +242,163 @@
 
 ### 객체지향 쿼리언어
 ###### JPQL
- - 가장 단순한 조회 방법
+```
+    String jpql = "select m from Member m where m.name = :name"
+    var result = em.createQuery(jpql, Member.class).getResultList();
+```
+ - 한마디로 정의하면 객체지향 SQL. 가장 단순한 조회 방법
+ - JPA는 SQL을 추상화한 JPQL이라는 객체 지향 쿼리언어를 제공
+ - SQL문법과 유사, SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN 등을 지원
+ - JPQL은 엔티티객체를 대상으로 쿼리, SQL은 DB 테이블 대상으로 쿼리를 작성
+ - 테이블이 아닌 객체를 대상으로 검색하는 객체 지향 쿼리
+ - SQL을 추상화해서 특정 데이터베이스 SQL에 의존하지않음
+
 ###### JPA Criteria
+ - 문자가 아닌 자바코드로 JPQL을 작성할 수 있음, JPQL빌더 역할을 함
+ - JPA공식기능이나, 너무 복잡하고 실용성이 없다.
+ - QueryDSL을 권장
+
 ###### QueryDSL
+```
+    JPAFactoryQuery query = new JPAQueryFactory(em);
+    QMember m = QMember.member;
+    var list = query.selectFrom(m)
+                    .where(m.age.gt(18))
+                    .orderBy(m.name.desc())
+                    .fetch();
+```
+ - 문자가아닌 자바코드로 JPQL을 작성할 수 있음, JPQL빌더 역할을 함
+ - 컴파일 시점에 문법오류를 찾을 수 있고, 동적쿼리 작성 편리하다. 단순하고 쉽다.
+
 ###### native SQL
+```
+    String sql = "SELECT ID, AGE, TEAM_ID FROM MEMBER WHERE NAME = 'KIM'";
+    var result = em.creatteNativeQuery(sql, Member.class).getResultList();
+```
+ - JPA가 제공하는 SQL을 직접 사용하는 기능
+ - JPQL로 해결할 수 없는 특정 데이터베이스에 의존적인 기능
+
 ###### JDBC API, MyBatis, SpringJdbcTemplate
+ - JPA를 사용하면서 JDBC 커넥션을 직접 사용하거나, 스프링 JdbcTemplate, MyBatis 등 함께사용가능
+ - 영속성 컨텍스트를 적절한 시점에 강제로 플러시 필요
+
+### JPQL
+ - JPQL은 객체지향 쿼리언어. 테이블을 대상으로 쿼리하는것이 아닌, 엔티티객체를 대상으로 쿼리
+ - SQL을 추상화해서 특정 데이터베이스 SQL에 의존하지 않는다. 결국 SQL로 변환된다.
+
+###### JPQL 문법
+```
+    var sql = "select m from Member as m where m.name = :name"
+    var result = em.createQuery(sql, Member.class)
+                    .setParameter("name", name)
+                    .setFristResult(1)
+                    .setMaxResult(10)
+                    .getResultList();
+```
+ - 엔티티와 속성은 대소문자를 구분, JPQL키워드(select, FROM, where ..)는 대소문자 구분X
+ - 테이블명이 아닌 엔티티의 이름을 사용하고, 별칭(m)은 필수
+ - 그룹함수, 정렬 사용 가능
+ - `setFristResult()`, `setMaxResult()` 로 페이징 가능
+
+###### 조인
+```
+    SELECT m FROM Member m (INNER) JOIN m.team t : 내부조인 (INNER)생략 가능
+    SELECT m FROM Member m LEFT (OUTER) JOIN m.team t : 외부조인 (OUTER)생략 가능
+    SELECT COUNT(m) from Member m, Team t WHERE m.username = t.name : 세타조인
+    
+    SELECT m, t FROM Member m LEFT JOIN m.team t on t.name = "A" 
+```
+ - ON 절을 활용해 조인대상 필터링과 연관관계 없는 엔티티의 외부조인 가능해진다
+ - 명시적 조인은 join 키워드를 직접사용, 묵시적은 경로 표현식에 의해 묵시적으로 SQL조인 발생
+ - 묵시적 조인시 항상 내부조인
+ - 컬렉션은 경로탐색의 끝 명시적 조인을 통해 별칭을 얻어야한다.
+ - 경로탐색은 주로 SELECT, WHERE 절에서 사용하지만 묵시적 조인으로인해 FROM (JOIN)절에 영향을 줌
+
+###### 경로 표현식 
+```
+    select m.name               > 상태필드
+    from Member m               
+    join m.team t               > 단일 값 연관필드
+    join m.orders o             > 컬렉션 값 연관필드
+    where t.name = "name"
+```
+ - 상태필드는 단순히 값을 저장하기 위한 필드
+ - 상태필드의 연관경로는 경로 탐색의 끝, 탐색 X
+ - 연관필드는 연관관계를 위한 필드
+ - 단일값 연관필드는 N:1, 1:1, 대상이 엔티티인 경우
+ - 단일값 연관경로는 묵시적 내부조인(inner join) 발생, 탐색 O
+ - 컬렉션값 연관필드는 1:N, N:M, 대상이 컬렉션인 경우
+ - 컬렉션값 연관경로는 묵시적 내부조인이 발생, 탐색 X, 명시적 조인을 통해 별칭을 얻어 탐색가능
+
+###### FETCH JOIN
+```
+    SQL  : SELECT M.* T.* FROM MEMBER M INNERJOIN TEAM T ON M.TEAM_ID = T.ID
+    JPQL : SELECT m FROM Member m join fetch m.team
+
+```
+ - SQL의 조인종류가 아닌, JPQL에서 성능최적화를 위해 제공하는 기능
+ - 연관된 엔티티나 컬렉션을 SQL한번에 함께 조회하는 기능
+ - join fetch 명령어 사용
+ - JPQL의 DISTINCT는 SQL에 DISTINCT추가와 어플리케이션에서 엔티티 중복제거를 함께 해준다.
+ - fetch join을 사용할 때만 연관된 엔티티도 함께 조회(즉시로딩)
+ - 객체그래프를 SQL한번에 조회하는 개념
+ - 페치조인대상에는 별칭을 줄 수 없고, 둘 이상의 컬렉션은 할 수 없다.
+ - 컬렉션을 페치조인하면 페이징처리를 할 수 없다.
+
+###### 다형성 쿼리
+```
+    select i from Item i where type(i) IN (Book, Movie) > TYPE
+    select i from Item i where treat(i as Book).author = "kim" > TREAT
+```
+ - TYPE은 조회대상을 특정 자식으로 한정한다.
+ - TREAT는 자바의 타입캐스팅과 유사하다.
+ - TREAT는 상속구조에서 부모타입을 특정 자식타입으로 다룰 때 사용한다
+
+###### 엔티티 직접 사용
+```
+    select count(m) from Member m
+```
+ - JPQL에서 엔티티를 직접 사용하면 해당 엔티티의 기본키 값을 사용한다.
+
+###### Named쿼리 - 정적쿼리
+```
+    @NamedQuery(name = Member.findByUserId, 
+                query = "select m from Member m where m.id = "id")               
+
+```
+ - 미리 정의해서 이름을 부여해두고 사용하는 JPQL
+ - 정적쿼리
+ - 어노테이션, XML 에 정의
+ - 어플리케이션 로딩 시점에 초기화 후 재사용, 로딩시점에 쿼리를 검증
+ - XML이 항상 우선권을 가진다.
+
+###### JPQL 벌크 연산
+ - 쿼리 한번으로 여러 테이블의 로우 변경
+ - `executeUpdate()`의 결과는 영향받은 엔티티 수 반환
+ - 영속성 컨텍스트를 무시하고 DB에 직접 쿼리한다.
+
+
+
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
+ - 1
 
 </details>
