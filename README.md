@@ -19,7 +19,7 @@
  - `flush`는 영속성 컨텍스트를 비우지않고, 변경내용을 db에 동기화한다.
 
 ### 엔티티 매핑
-###### @Entity
+##### @Entity
 ```agsl
     @Entity
     public class Entity {
@@ -31,13 +31,13 @@
  - 기본생성자를 필수로 가져야하며, `final`, `enum`, `interface`,`inner` class 사용 X
  - 저장할 필드에 `final`을 사용하면 안된다.
 
-###### 필드와 컬럼 매핑
+##### 필드와 컬럼 매핑
  - `@Column`을 사용해 컬럼을 매핑할 수 있다.
  - `@Column` 의 속성들을 사용해 db컬럼의 이름, nullable, unique 등 제약을 걸 수있다.
  - `Enum`타입을 사용할 때 `@Enumerated(ㄷEnumType.STRING)`을 사용해줘야 한다.
  - 길이가 큰 자료형일 경우 `@Lob`를 사용해 만들 수 있다.
 
-###### 기본 키 매핑
+##### 기본 키 매핑
 ```
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -109,7 +109,7 @@
  - 서브타입을 명확하게 구분해 처리할때 효과적이고, not null 제약조건을 사용할 수 있다.
  - 여러 자식테이블을 함께 조회할때 성능이 느리고, 자식테이블을 통합해서 쿼리하기 어렵다.
 
-###### `@MappedSuperclass`
+##### `@MappedSuperclass`
  - 상속관계 매핑 X, 엔티티 X, 테이블과 매핑 X
  - 부모클래스를 상속받는 자식클래스에 정보만을 제공한다. 조회, 검색이 불가능하다.
  - 직접 생성해서 사용할 일이 없으므로 추상클래스를 권장
@@ -117,7 +117,7 @@
  - `@Entity`클래스는 엔티티나, `@MappedSuperclass`로 지정한클래스만 상속가능 
 
 ### 프록시와 연관관계
-###### 프록시
+##### 프록시
  - 실제 클래스를 상속받아 만들진다. 실제 클래스와 겉 모양이 같다.
  - 사용하는 입장에서는 진짜 객체인지 프록시 객체인지 구분하지 않고 사용하면됨
  - 프록시 객체는 실제 객체의 참조(target)를 보관
@@ -128,26 +128,26 @@
  - 영속성 컨텍스트에 찾는 엔티티가 이미있다면, `em.getReference()`를 호출해도 실제 엔티티를 반환한다.
  - 준영속 상태일때, 프록시를 초기화하면 문제가 발생한다.
 
-###### 즉시로딩과 지연로딩
+##### 즉시로딩과 지연로딩
  - 가급적 지연로딩만 사용하는것을 권장
  - 즉시로딩을 적용하면 예상치못한 SQL에러 발생할 수 있고, JQPQL에서 N+1 쿼리 문제를 일으킬 수 있다.
 
-###### 지연로딩 활용
+##### 지연로딩 활용
  - 모든연관관계에서 지연로딩을 권장
  - JPQL fetch조인이나, 엔티티그래프 기능을 사용하는것을 권장
 
-###### 영속성 전이 : CASCADE
+##### 영속성 전이 : CASCADE
  - 특정 엔티티를 영속상태로 만들때 연관된 엔티티도 함께 영속상태로 만들고 싶을때 사용
  - 영속성전이는 연관관계를 매핑하는것과 아무관련이 없다
  - 엔티티를 영속화할때 연관된 엔티티도 함께 영속화하는 편리함을 제공한다
 
-###### 고아객체
+##### 고아객체
  - 부모엔티티와 연관관계가 끊어진 자식엔티티를 말함
  - 참조가 제거된 엔티티는 다른곳에서 참조하지않는 고아객체로보고 삭제하는기능
  - 참조하는곳이 하나일 때 사용해야하고, 특정엔티티가 개인소유할 때 사용한다.
  - `@OneToOne`, `@OneToMany`에서만 사용이 가능하다
 
-###### 영속성 전이 + 고아객체, 생명주기
+##### 영속성 전이 + 고아객체, 생명주기
 ```
     CascadeType.ALL + orphanRemoval = true
 ```
@@ -157,11 +157,11 @@
 
 ### 값 타입
 ##### 기본 값 타입
-###### 엔티티 타입 
+##### 엔티티 타입 
  - `@Entity`로 정의하는객체
  - 데이터가 변해도 식별자로 지속해서 추적가능
 
-###### 값 타입
+##### 값 타입
  - `int`, `Integer`, `String` 처럼 단순 값으로 사용하는 자바 기본 타입이나 객체
  - 식별자가 없고, 값만 있으므로 변경시 추적이 불가능
  1) 기본값 타입
@@ -184,7 +184,7 @@
     - 임베디드 타입의 값이 null이면 매핑한 컬럼값은 모두 null
  3) 컬렉션 값 타입
 
-###### 값 타입과 불변객체
+##### 값 타입과 불변객체
  - 값 타입은 복잡한 객체사상을 단순화하려고 만든 개념. 값 타입은 단순하고 안전하게 다룰수 있어야한다. 
    - 값 타입의 공유참조 
      - 임베디드 타입같은 값 타입을 여러 엔티티에서 공유하면 위험하다. 
@@ -204,13 +204,13 @@
      - 값 타입은 불변 객체(immutable object)로 설계해야함
      - 생성자로만 값을 설정하고, 수정자를 만들지 않으면 된다.
 
-###### 값 타입의 비교
+##### 값 타입의 비교
  - 인스턴스가 달라고 그 안에 값이 같으면 같은것으로 봐야한다.
  - 동일성(identity) 비교 : 인스턴스의 참조값을 비교, `==` 사용
  - 동등성(equivalence) 비교 : 인스턴스의 값을 비교, `equals()` 사용
  - 값 타입 비교는 `equals()`메소드를 적절히 재 정의해 동등성 비교를 해야한다. 
 
-###### 값 타입 컬렉션
+##### 값 타입 컬렉션
  - 값 타입을 하나이상 저장할 때 사용
  - `@ElementCollection`, `@ColletionTable` 등을 사용
  - DB는 컬렉션을 같은 테이블에 저장할 수 없다.
@@ -226,7 +226,7 @@
      - 값 타입컬렉션 대신, 일대다 관계를 고려한다. 관계를 위한 엔티티를 만들고, 여기서 값 타입을 사용
      - 영속성 전이 + 고아객체 제거를 사용해서 값 타입 컬렉션처럼 사용
 
-###### 값 타입 정리
+##### 값 타입 정리
  - 엔티티 타입의 특정
    - 식별자 O
    - 생명주기 관리
@@ -241,7 +241,7 @@
  - 식별자가 필요하고, 지속해서 값을 추적, 변경해야한다면 그것은 값타입이 아닌 엔티티이다.
 
 ### 객체지향 쿼리언어
-###### JPQL
+##### JPQL
 ```
     String jpql = "select m from Member m where m.name = :name"
     var result = em.createQuery(jpql, Member.class).getResultList();
@@ -253,12 +253,12 @@
  - 테이블이 아닌 객체를 대상으로 검색하는 객체 지향 쿼리
  - SQL을 추상화해서 특정 데이터베이스 SQL에 의존하지않음
 
-###### JPA Criteria
+##### JPA Criteria
  - 문자가 아닌 자바코드로 JPQL을 작성할 수 있음, JPQL빌더 역할을 함
  - JPA공식기능이나, 너무 복잡하고 실용성이 없다.
  - QueryDSL을 권장
 
-###### QueryDSL
+##### QueryDSL
 ```
     JPAFactoryQuery query = new JPAQueryFactory(em);
     QMember m = QMember.member;
@@ -270,7 +270,7 @@
  - 문자가아닌 자바코드로 JPQL을 작성할 수 있음, JPQL빌더 역할을 함
  - 컴파일 시점에 문법오류를 찾을 수 있고, 동적쿼리 작성 편리하다. 단순하고 쉽다.
 
-###### native SQL
+##### native SQL
 ```
     String sql = "SELECT ID, AGE, TEAM_ID FROM MEMBER WHERE NAME = 'KIM'";
     var result = em.creatteNativeQuery(sql, Member.class).getResultList();
@@ -278,7 +278,7 @@
  - JPA가 제공하는 SQL을 직접 사용하는 기능
  - JPQL로 해결할 수 없는 특정 데이터베이스에 의존적인 기능
 
-###### JDBC API, MyBatis, SpringJdbcTemplate
+##### JDBC API, MyBatis, SpringJdbcTemplate
  - JPA를 사용하면서 JDBC 커넥션을 직접 사용하거나, 스프링 JdbcTemplate, MyBatis 등 함께사용가능
  - 영속성 컨텍스트를 적절한 시점에 강제로 플러시 필요
 
@@ -286,7 +286,7 @@
  - JPQL은 객체지향 쿼리언어. 테이블을 대상으로 쿼리하는것이 아닌, 엔티티객체를 대상으로 쿼리
  - SQL을 추상화해서 특정 데이터베이스 SQL에 의존하지 않는다. 결국 SQL로 변환된다.
 
-###### JPQL 문법
+##### JPQL 문법
 ```
     var sql = "select m from Member as m where m.name = :name"
     var result = em.createQuery(sql, Member.class)
@@ -300,7 +300,7 @@
  - 그룹함수, 정렬 사용 가능
  - `setFristResult()`, `setMaxResult()` 로 페이징 가능
 
-###### 조인
+##### 조인
 ```
     SELECT m FROM Member m (INNER) JOIN m.team t : 내부조인 (INNER)생략 가능
     SELECT m FROM Member m LEFT (OUTER) JOIN m.team t : 외부조인 (OUTER)생략 가능
@@ -314,7 +314,7 @@
  - 컬렉션은 경로탐색의 끝 명시적 조인을 통해 별칭을 얻어야한다.
  - 경로탐색은 주로 SELECT, WHERE 절에서 사용하지만 묵시적 조인으로인해 FROM (JOIN)절에 영향을 줌
 
-###### 경로 표현식 
+##### 경로 표현식 
 ```
     select m.name               > 상태필드
     from Member m               
@@ -330,7 +330,7 @@
  - 컬렉션값 연관필드는 1:N, N:M, 대상이 컬렉션인 경우
  - 컬렉션값 연관경로는 묵시적 내부조인이 발생, 탐색 X, 명시적 조인을 통해 별칭을 얻어 탐색가능
 
-###### FETCH JOIN
+##### FETCH JOIN
 ```
     SQL  : SELECT M.* T.* FROM MEMBER M INNERJOIN TEAM T ON M.TEAM_ID = T.ID
     JPQL : SELECT m FROM Member m join fetch m.team
@@ -345,7 +345,7 @@
  - 페치조인대상에는 별칭을 줄 수 없고, 둘 이상의 컬렉션은 할 수 없다.
  - 컬렉션을 페치조인하면 페이징처리를 할 수 없다.
 
-###### 다형성 쿼리
+##### 다형성 쿼리
 ```
     select i from Item i where type(i) IN (Book, Movie) > TYPE
     select i from Item i where treat(i as Book).author = "kim" > TREAT
@@ -354,13 +354,13 @@
  - TREAT는 자바의 타입캐스팅과 유사하다.
  - TREAT는 상속구조에서 부모타입을 특정 자식타입으로 다룰 때 사용한다
 
-###### 엔티티 직접 사용
+##### 엔티티 직접 사용
 ```
     select count(m) from Member m
 ```
  - JPQL에서 엔티티를 직접 사용하면 해당 엔티티의 기본키 값을 사용한다.
 
-###### Named쿼리 - 정적쿼리
+##### Named쿼리 - 정적쿼리
 ```
     @NamedQuery(name = Member.findByUserId, 
                 query = "select m from Member m where m.id = "id")               
@@ -372,7 +372,7 @@
  - 어플리케이션 로딩 시점에 초기화 후 재사용, 로딩시점에 쿼리를 검증
  - XML이 항상 우선권을 가진다.
 
-###### JPQL 벌크 연산
+##### JPQL 벌크 연산
  - 쿼리 한번으로 여러 테이블의 로우 변경
  - `executeUpdate()`의 결과는 영향받은 엔티티 수 반환
  - 영속성 컨텍스트를 무시하고 DB에 직접 쿼리한다.
