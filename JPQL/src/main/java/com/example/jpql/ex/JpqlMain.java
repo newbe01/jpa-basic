@@ -13,12 +13,20 @@ public class JpqlMain {
         tx.begin();
 
         try {
-            for(int i = 0 ; i < 100; i++) {
-                Member member = new Member();
-                member.setUsername("name" + i);
-                member.setAge(i);
-                em.persist(member);
-            }
+//            for(int i = 0 ; i < 100; i++) {
+
+            Team team = new Team();
+            team.setName("team");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("name");
+            member.setAge(14);
+            member.setTeam(team);
+
+
+            em.persist(member);
+//            }
 // JPQL 기본문법
 //            TypedQuery<Member> fineMem = em.createQuery("select m from Member m", Member.class);    // type 이 명확할때
 //            Query fineMem2 = em.createQuery("select m from Member m");
@@ -59,14 +67,18 @@ public class JpqlMain {
 //            System.out.println("memberDTO.getUsername() = " + memberDTO.getAge());
 
 // 페이징
-            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
-                    .getResultList();
-            System.out.println("resultList = " + resultList.size());
-            for (Member member1 : resultList) {
-                System.out.println("member1 = " + member1.toString());
-            }
+//            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+//                    .setFirstResult(0)
+//                    .setMaxResults(10)
+//                    .getResultList();
+//            System.out.println("resultList = " + resultList.size());
+//            for (Member member1 : resultList) {
+//                System.out.println("member1 = " + member1.toString());
+//            }
+
+// Join
+            String query = "select m from Member m left join m.team t on t.name = 'team'";
+            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
 
             tx.commit();
         } catch (Exception e) {
