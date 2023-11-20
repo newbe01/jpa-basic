@@ -90,20 +90,28 @@ public class JpqlMain {
 //                    .getResultList();
 
 // case
-            String query = "select" +
-                    "           case when m.age <= 10 then 'student' " +
-                    "                when m.age >= 60 then 'Senior' " +
-                    "           else 'normal' end as price," +
-                    "       coalesce(m.username, 'noname')," +
-                    "       nullif(m.username, 'ADMIN') as username " +
+//            String query = "select" +
+//                    "           case when m.age <= 10 then 'student' " +
+//                    "                when m.age >= 60 then 'Senior' " +
+//                    "           else 'normal' end as price," +
+//                    "       coalesce(m.username, 'noname')," +
+//                    "       nullif(m.username, 'ADMIN') as username " +
+//                    "from Member m";
+//            List<Object[]> resultList = em.createQuery(query).getResultList();
+//            Object[] objects = resultList.get(0);
+//            System.out.println("resultList = " + objects[0]);
+//            System.out.println("resultList = " + objects[1]);
+//            System.out.println("resultList = " + objects[2]);
+
+// JPQL 기본함수
+
+            String sql = "select 'a' || 'b', " +
+                    "   concat('a', 'b'),  " +
+                    "   substring(m.username, 2, 3), " +
+                    "   trim(m.age) ," +
+                    "   locate('de', 'abcdefg', 1) " +      //  index 찾기
                     "from Member m";
-            List<Object[]> resultList = em.createQuery(query).getResultList();
-            Object[] objects = resultList.get(0);
-            System.out.println("resultList = " + objects[0]);
-            System.out.println("resultList = " + objects[1]);
-            System.out.println("resultList = " + objects[2]);
-
-
+            em.createQuery(sql).getResultList();
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
