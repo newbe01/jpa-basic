@@ -82,12 +82,27 @@ public class JpqlMain {
 //            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
 
 // JPQL TYPE
-            String query = "select m, 'HELLO', TRUE from Member m left join m.team t on t.name = 'team'" +
-//                    "where m.memberType = com.example.jpql.ex.MemberType.ADMIN";  // enum 은 패키지까지 다 넣어줘야함
-                    "where m.memberType = :memType";  // enum 은 패키지까지 다 넣어줘야함
-            em.createQuery(query, Member.class)
-                    .setParameter("memType", MemberType.ADMIN)
-                    .getResultList();
+//            String query = "select m, 'HELLO', TRUE from Member m left join m.team t on t.name = 'team'" +
+////                    "where m.memberType = com.example.jpql.ex.MemberType.ADMIN";  // enum 은 패키지까지 다 넣어줘야함
+//                    "where m.memberType = :memType";  // enum 은 패키지까지 다 넣어줘야함
+//            em.createQuery(query, Member.class)
+//                    .setParameter("memType", MemberType.ADMIN)
+//                    .getResultList();
+
+// case
+            String query = "select" +
+                    "           case when m.age <= 10 then 'student' " +
+                    "                when m.age >= 60 then 'Senior' " +
+                    "           else 'normal' end as price," +
+                    "       coalesce(m.username, 'noname')," +
+                    "       nullif(m.username, 'ADMIN') as username " +
+                    "from Member m";
+            List<Object[]> resultList = em.createQuery(query).getResultList();
+            Object[] objects = resultList.get(0);
+            System.out.println("resultList = " + objects[0]);
+            System.out.println("resultList = " + objects[1]);
+            System.out.println("resultList = " + objects[2]);
+
 
             tx.commit();
         } catch (Exception e) {
