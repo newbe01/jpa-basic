@@ -22,6 +22,7 @@ public class JpqlMain {
             Member member = new Member();
             member.setUsername("name");
             member.setAge(14);
+            member.setMemberType(MemberType.ADMIN);
             member.setTeam(team);
 
 
@@ -77,8 +78,16 @@ public class JpqlMain {
 //            }
 
 // Join
-            String query = "select m from Member m left join m.team t on t.name = 'team'";
-            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
+//            String query = "select m from Member m left join m.team t on t.name = 'team'";
+//            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
+
+// JPQL TYPE
+            String query = "select m, 'HELLO', TRUE from Member m left join m.team t on t.name = 'team'" +
+//                    "where m.memberType = com.example.jpql.ex.MemberType.ADMIN";  // enum 은 패키지까지 다 넣어줘야함
+                    "where m.memberType = :memType";  // enum 은 패키지까지 다 넣어줘야함
+            em.createQuery(query, Member.class)
+                    .setParameter("memType", MemberType.ADMIN)
+                    .getResultList();
 
             tx.commit();
         } catch (Exception e) {

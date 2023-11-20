@@ -13,9 +13,20 @@ public class Member {
 
     private int age;
 
+    public MemberType getMemberType() {
+        return memberType;
+    }
+
+    public void setMemberType(MemberType memberType) {
+        this.memberType = memberType;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @Enumerated(EnumType.STRING)
+    private MemberType memberType;
 
     public void changeTeam(Team team) {
         this.team = team;
