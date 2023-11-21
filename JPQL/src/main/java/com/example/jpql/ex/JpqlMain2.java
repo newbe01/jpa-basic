@@ -83,14 +83,22 @@ public class JpqlMain2 {
 
 //  NamedQuery
 //  Entity 에 @NamedQuery 로 정의된 쿼리를 실행함
-            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("username", "name1")
-                    .getResultList();
+//            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+//                    .setParameter("username", "name1")
+//                    .getResultList();
+//
+//            for (Member member1 : resultList) {
+//                System.out.println("member1 = " + member1);
+//            }
 
-            for (Member member1 : resultList) {
-                System.out.println("member1 = " + member1);
-            }
+//  벌크연산
+//  벌크연산은 DB에만 적용되기때문에 영속성컨텍스트를 초기화 한 뒤 사용해야한다.
+            String sql = "update Member m set m.age = :age";
+            int cnt = em.createQuery(sql)
+                    .setParameter("age", 20)
+                    .executeUpdate();
 
+            System.out.println("cnt = " + cnt);
 
             tx.commit();
         } catch (Exception e) {
