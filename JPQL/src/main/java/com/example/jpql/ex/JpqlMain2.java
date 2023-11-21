@@ -61,16 +61,24 @@ public class JpqlMain2 {
 //            String sql = "select m from Member m join fetch m.team";
 //            String sql = "select t From Team t";
 //            em.createQuery(sql).setFirstResult(0).setMaxResults(2).getResultList()    //batch size 와 함께 아래쿼리 페이징
-            String sql = "select distinct t from Team t join fetch t.members";  // 컬렉션의 중복도 함께 제거
-            List<Team> resultList = em.createQuery(sql, Team.class).getResultList();
+//            String sql = "select distinct t from Team t join fetch t.members";  // 컬렉션의 중복도 함께 제거
+//            List<Team> resultList = em.createQuery(sql, Team.class).getResultList();
+//
+//            for (Team findTeam : resultList) {
+//                System.out.println("member = " + findTeam.getName() +"  ,"+ findTeam.getMembers().size());
+//
+//                for (Member m : findTeam.getMembers()) {
+//                    System.out.println("m = " + m);
+//                }
+//            }
 
-            for (Team findTeam : resultList) {
-                System.out.println("member = " + findTeam.getName() +"  ,"+ findTeam.getMembers().size());
-
-                for (Member m : findTeam.getMembers()) {
-                    System.out.println("m = " + m);
-                }
-                
+//  Entity 직접사용
+//            String sql = "select m from Member m where m.id = :memberId";
+//            String sql = "select m from Member m where m = :member";    // 따로 값 지정안할시 기본키로 동작
+            String sql = "select m from Member m where m.team = :team";     // 외래키값은 Entity에 매핑한 값이 기본키로 동작
+            List<Member> member1 = em.createQuery(sql, Member.class).setParameter("team", team).getResultList();
+            for (Member findMem : member1) {
+                System.out.println("findMem = " + findMem);
             }
 
             tx.commit();
