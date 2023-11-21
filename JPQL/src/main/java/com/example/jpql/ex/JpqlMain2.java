@@ -75,11 +75,22 @@ public class JpqlMain2 {
 //  Entity 직접사용
 //            String sql = "select m from Member m where m.id = :memberId";
 //            String sql = "select m from Member m where m = :member";    // 따로 값 지정안할시 기본키로 동작
-            String sql = "select m from Member m where m.team = :team";     // 외래키값은 Entity에 매핑한 값이 기본키로 동작
-            List<Member> member1 = em.createQuery(sql, Member.class).setParameter("team", team).getResultList();
-            for (Member findMem : member1) {
-                System.out.println("findMem = " + findMem);
+//            String sql = "select m from Member m where m.team = :team";     // 외래키값은 Entity에 매핑한 값이 기본키로 동작
+//            List<Member> member1 = em.createQuery(sql, Member.class).setParameter("team", team).getResultList();
+//            for (Member findMem : member1) {
+//                System.out.println("findMem = " + findMem);
+//            }
+
+//  NamedQuery
+//  Entity 에 @NamedQuery 로 정의된 쿼리를 실행함
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "name1")
+                    .getResultList();
+
+            for (Member member1 : resultList) {
+                System.out.println("member1 = " + member1);
             }
+
 
             tx.commit();
         } catch (Exception e) {
