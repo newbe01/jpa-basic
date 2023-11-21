@@ -59,6 +59,8 @@ public class JpqlMain2 {
 //  fetch join
 //  연관된 엔티티도 함께조회(즉시로딩) 객체그래프를 한번에 조회하는개념
 //            String sql = "select m from Member m join fetch m.team";
+//            String sql = "select t From Team t";
+//            em.createQuery(sql).setFirstResult(0).setMaxResults(2).getResultList()    //batch size 와 함께 아래쿼리 페이징
             String sql = "select distinct t from Team t join fetch t.members";  // 컬렉션의 중복도 함께 제거
             List<Team> resultList = em.createQuery(sql, Team.class).getResultList();
 

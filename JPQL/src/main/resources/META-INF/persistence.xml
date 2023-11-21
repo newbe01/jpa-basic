@@ -19,6 +19,8 @@
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.use_sql_comments" value="true" />
             <property name="hibernate.jdbc.batch_size" value="10"/> <!-- 한번에 전송하는 최대 쿼리 수-->
+            <property name="hibernate.default_batch_fetch_size" value="500"/> <!-- 한번에 전송하는 최대 쿼리 수-->
+
 <!--            <property name="hibernate.id.new_generator_mappings" value="true" />-->
 
             <!-- entity 객체를 table create -->
